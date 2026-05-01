@@ -1,0 +1,38 @@
+# first we define name 
+name: My first Python CI 
+
+# Trigger the workflow - Define Events(push,pull_request,etc....)
+# In triggering the workflow  we need to define the events 
+on:
+  push: # first event  
+    branches: 
+        - main
+  pull_request: # second event
+    branches: 
+        - main 
+        # there can be more branches like (-staging,-production,etc...)
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Check out the code from repository 
+      - name: Check out the code 
+        uses: actions/checkout@v2 # it is the prebuilt action from github to check out the code 
+
+      # Step 2: Set up python env:
+      - name: Set up Python 
+        uses: actions/setup-python@v2 #setup python env 
+        with:
+          python-version: '3.10'
+
+      # Step 3: Install dependencies 
+      - name:  Install dependencies
+        run: 
+            python -m pip install --upgrade pip 
+            pip install -r requirements.txt 
+        
+      # Step 4: Run Test 
+      - name:  Run tests 
+        run: pytest #-> this pytest will sreach for tests folder   
